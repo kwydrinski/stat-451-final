@@ -1,0 +1,148 @@
+---
+title: "Final"
+subtitle: "STAT 451-01"
+author:
+- Jedidiah Harwood
+- Kurt Wydrinski
+date: "December 11, 2019"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\newpage
+# 1) Color Pallets
+
+When using color in visualizations there are different kinds of pallets that can
+be used.
+
+## a. Pallet 1
+
+Describe the pallet and explain when you would use such a pallet.
+
+```{r echo=FALSE, fig.align='center'}
+knitr::include_graphics('1a.png')
+```
+
+***
+
+The palette above is an example of sequential color schemes using multi-hued
+colors. 
+
+Each scheme is sequential because it allows the highlighting of order in data
+through the use of shading. Within a given hue such as blue, there are multiple
+shades from light to dark. The lightness or darkness of the hue can be used to
+represent different levels of values. Typically, light hues represent low
+values and dark hues represent high values.
+
+Each scheme is multi-hued meaning the colors used are not just shades of a
+single hue but instead, use multiple hues. When using multiple hues, the
+palettes still provide a pleasing aethetic transition from lighter shades to
+darker shades that preserves the implied sequential meaning of the collective
+colors.
+
+Sequential colors schemes are suited to highlighted data that can be categorized
+into ordered categories. Examples could be age ranges, levels of experience,
+density ranges, etc.
+
+***
+
+## b. Pallet 2
+
+Describe the pallet and explain when you would use such a pallet.
+
+```{r echo=FALSE, fig.align='center'}
+knitr::include_graphics('1b.png')
+```
+
+***
+
+The palette above is an example of diverging color schemes. Each scheme is
+diverging because it allows the highlighting of both central and extreme values
+in underlying data. Lighter shades and hues are used as the central colors in
+each of these palettes. In the palettes above, each has five (5) colors with
+the third (3) color being the central, lightest color. Moving away from this
+color in either direction towards the first and last colors in the palette, the
+shades and hues get darker. The colors diverge away from a light, neutral color
+towards darker, more distinct colors. The colors at the ends of the palettes
+typically contrast highly from each other to help amplify the meaning of the
+divergence in the underlying data away from its central values.
+
+Diverging colors schemes are suited to highlight the central and extreme value
+in data distributions. The light coloring of central values tends to indicate
+the typical values of data while the bold, contrasting coloring of extreme
+values tends to highlight these extreme values. Examples could be grade
+distributions, income level distributions, age ranges, etc.
+
+Note that many datasets could be highlighted by either sequential or diverging
+schemes. For example, age ranges could be highlighted by either. However, the
+intent of the visualization would help dictate which to use. Consider a
+question posed such as "Comparing pre-teen, teen, adult, and eldery
+populations...?" Now consider a second, similar question posed such as "What are
+the average ages...?" The first question is being posed from a categorial
+perspective that implies a sequence tied to human lifecycles. There is implied
+interest in order so a sequential color scheme would be applicable. For the
+second question, there was not much emphasis on any difference between young or
+old but instead more interest in the distribution, the *average*. In this case,
+a diverging color scheme may be more suited to the vizualization to not only
+highlight the average (central valeus) but also highlight the extremes.
+
+***
+
+## c. Pallet 3
+
+Describe the pallet and explain when you would use such a pallet.
+
+```{r echo=FALSE, fig.align='center'}
+knitr::include_graphics('1c.png')
+```
+
+***
+
+The palette above is an example of qualitative color schemes. Each scheme is
+designed with a set of color shades and hues that contrast from one another.
+Sequential and diverging color schemes do not try to contrast as much but
+instead try to show more relationship or transitioning of values between each
+color. Qualitative schemes try to show the contrast as much as possible
+attempting to highlighted the grouping and differences more than the
+similarities or nearness to other groups.
+
+Qualitative color schemes are best used when tyring to depict different
+categories of data that are more distinct from each other than they are as
+similar or close to one another. Examples include demographic data such as
+racial identity, gender identity, political affiliation, religious affiliation,
+sports team fan affiliation, etc.
+
+***
+
+\newpage
+# 2) Earthquakes
+
+Here is the link to the USGS website where the worldwide
+[earthquake](https://earthquake.usgs.gov/earthquakes/feed/v1.0/) data can be
+downloaded. Download all earthquake data for the past 30 days in .csv format.
+Using R, make a map of the world with points where the earthquakes occurred.
+Make a bubble map using the magnitude. Thoroughly discuss your visualizations.
+
+
+***
+
+TO DO
+
+***
+
+\newpage
+# 3) Disease / Illness Story
+
+See `Final.pdf` in this project's Files section for detailed instructions.
+
+***
+
+TO DO
+
+***
