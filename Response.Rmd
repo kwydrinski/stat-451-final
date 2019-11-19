@@ -48,7 +48,9 @@ colors.
 
 Sequential colors schemes are suited to highlighted data that can be categorized
 into ordered categories. Examples could be age ranges, levels of experience,
-density ranges, etc.
+density ranges, etc.  
+
+One vizualiation that may beneit from this color scheme, is a tile plot. One of the main features of a heat map, is its use of color to distinguish ordinal categorical variables, in a spacial setting.  With a sequential color scheme as such, I would apply this theme to a heat map, in order to provide a well read, distinguishable, vizualization.  
 
 ***
 
@@ -118,16 +120,63 @@ similar or close to one another. Examples include demographic data such as
 racial identity, gender identity, political affiliation, religious affiliation,
 sports team fan affiliation, etc.
 
+Some vizualzation to which this color scheme could be applied, include pie charts, waffle plots, donut plots, and ring plots.  
+
 ***
 
 \newpage
 # 2) Earthquakes
+
+```{r}
+library(tidyverse)
+```
+
 
 Here is the link to the USGS website where the worldwide
 [earthquake](https://earthquake.usgs.gov/earthquakes/feed/v1.0/) data can be
 downloaded. Download all earthquake data for the past 30 days in .csv format.
 Using R, make a map of the world with points where the earthquakes occurred.
 Make a bubble map using the magnitude. Thoroughly discuss your visualizations.
+
+## World Map of Points
+
+  As the earthquake data of the past 30 days is updated every minute, it is important to specify that the earthquake data was downloaded at 1:08 p.m., on November 18, 2019.
+  
+  To begin the map, I will read in the earthquake dataset under the variable name: "earthquake."
+```{r}
+earthquake <- read_csv("earthquake.csv", col_names = TRUE)
+head(earthquake)
+```
+
+Variable | Description
+time | Time of Earthquake occurence
+latitude | Latitude lLocation of Earthquake
+longitude | Longitude location of Earthquake
+depth | Depth of the Event
+mag | Magnitude of Event
+magType | Algorithm or Method Used to Evaluate the Method of the Earthquake
+nst | Number of Seismic Stations used to evaluate Eathquake Location
+gap | The Largest azimutahl gap between azimuthally adjacent stations (in degrees)
+horizontalError | Uncertainty of Observed Event's Location (in KM)
+dmin | Smallest observed Distancwe to event epicenter from the Closest Seismic Station
+rms | Root Mean Square Calculations of Residuals in predictions of Event occurence.
+net | ID of Data Contributer
+id | Unique Identification of Eathquake
+updated | Time of Upload in Original Dataset
+place | Nearby Named Geographical Region
+horizontalError | Uncertainty of Earthquake Location (in KM)
+depthError | Uncertainty of Earthquake Depth (in KM)
+magNst | Total number of Seismic Stations used to Calculate Earthquake's Magnitude
+Status | Indicates Whether Event has been viewed by a Person
+locationSource | Network that Authored location of Event
+magSource | Network that Authored Preffered Magnitude
+--- | ----
+
+  
+
+
+
+
 
 
 ***
