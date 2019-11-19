@@ -26,7 +26,7 @@ be used.
 Describe the pallet and explain when you would use such a pallet.
 
 ```{r echo=FALSE, fig.align='center'}
-knitr::include_graphics('1a.png')
+knitr::include_graphics('images/1a.png')
 ```
 
 ***
@@ -59,7 +59,7 @@ One vizualiation that may beneit from this color scheme, is a tile plot. One of 
 Describe the pallet and explain when you would use such a pallet.
 
 ```{r echo=FALSE, fig.align='center'}
-knitr::include_graphics('1b.png')
+knitr::include_graphics('images/1b.png')
 ```
 
 ***
@@ -101,7 +101,7 @@ highlight the average (central valeus) but also highlight the extremes.
 Describe the pallet and explain when you would use such a pallet.
 
 ```{r echo=FALSE, fig.align='center'}
-knitr::include_graphics('1c.png')
+knitr::include_graphics('images/1c.png')
 ```
 
 ***
