@@ -85,7 +85,7 @@ ggplot() +
                      labels = unlist(
                        lapply(seq(-180, 180, 90),
                               function(x) ifelse(x < 0,
-                                                 parse(text = paste0(x, "^o", "*W")),
+                                                 parse(text = paste0(-x, "^o", "*W")),
                                                  ifelse(x > 0,
                                                         parse(text = paste0(x, "^o", "*E")),
                                                         parse(text = paste0(x, "^o"))))
@@ -95,7 +95,7 @@ ggplot() +
                      labels = unlist(
                        lapply(seq(-90, 90, 45),
                               function(x) ifelse(x < 0,
-                                                 parse(text = paste0(x, "^o", "*S")),
+                                                 parse(text = paste0(-x, "^o", "*S")),
                                                  ifelse(x > 0,
                                                         parse(text = paste0(x, "^o", "*N")),
                                                         parse(text = paste0(x, "^o"))))
@@ -139,7 +139,7 @@ mg_global_map <- function() {
                        labels = unlist(
                          lapply(seq(-180, 180, 90),
                                 function(x) ifelse(x < 0,
-                                                   parse(text = paste0(x, "^o", "*W")),
+                                                   parse(text = paste0(-x, "^o", "*W")),
                                                    ifelse(x > 0,
                                                           parse(text = paste0(x, "^o", "*E")),
                                                           parse(text = paste0(x, "^o"))))
@@ -149,7 +149,7 @@ mg_global_map <- function() {
                        labels = unlist(
                          lapply(seq(-90, 90, 45),
                                 function(x) ifelse(x < 0,
-                                                   parse(text = paste0(x, "^o", "*S")),
+                                                   parse(text = paste0(-x, "^o", "*S")),
                                                    ifelse(x > 0,
                                                           parse(text = paste0(x, "^o", "*N")),
                                                           parse(text = paste0(x, "^o"))))
@@ -159,6 +159,169 @@ mg_global_map <- function() {
 
 ggplot() +
   mg_global_map() +
+  labs(title = "Title",
+       subtitle = "Subtitle",
+       caption = "Caption",
+       tag = "Tag",
+       x = "Longitude",
+       y = "Latitude")  
+```
+
+### World Maps with `ggmap` Package
+
+The code in this section demonstrates how global maps can be rendered using the
+`ggmap` package. Not a lot of discussion is provided around the code examples
+because of clear disadvantages in using this approach for current projects.
+
+#### `ggmap` Risks
+
+1. The package relies on Google and other third party mapping services.
+2. The Google mapping services require an API key to be administered within a
+   registered Google account. This key needs to be configured in the application
+   and managed. Changing of the Google account or API key enabled within Google
+   could render the application unusable requiring reconfiguring of the
+   credentials.
+3. Requiring a third party key for an API exposes the key owner to risk if the
+   provider's terms-of-service change in any way.
+4. The styling of political boundaries (i.e. countries, states, etc.) is not
+   a trivial process when using third party mapping services. The maps lend
+   themselves to data overlays but the political boundaries being displayed in
+   the maps may not be available with certain providers.
+
+#### `ggmap` Rewards
+
+1. Map backgrounds such as terrains, satellite views, or roads are easily
+   obtainable.
+2. API provides access to advanced features such as reverse geocoding, travel
+   routes, etc.
+3. Automated labelling of geographical boundaries at various levels such as
+   oceans, countries, etc.
+
+```{r}
+library(ggmap)
+```
+
+```{r}
+world_map <- get_stamenmap(bbox = c(left = -179.99,
+                                    bottom = -60.0,
+                                    right = 180,
+                                    top = 83),
+                           maptype = "toner-lite",
+                           zoom = 3,
+                           force = TRUE,
+                           crop = TRUE,
+                           messaging = FALSE)
+```
+
+```{r}
+ggmap(world_map)
+```
+
+## US State Maps
+
+Maps of the United States of America can be derived from both the `maps::world`
+and `maps::state` datasets. The data for the United States that exists in the
+world dataset is indicated by the `region` variable being set to `USA`.
+Collectively, these observations contain the political boundaries or borders of
+the United States. It is important to remember the boundaries of the Unites
+States not only include the 48 contiguous states on the North American
+continent but also Alaska, Hawaii, and a number of other territories that are
+not states.
+
+The `maps` datasets contain a `subregion` variable that is used to create
+subgroups within regions. For the US, it would seem that these groups would
+translate to individual states and territories but not quite. There are a
+number of observation in the US subset where there subregion is either numeric
+(e.g. 73) or not indicated (i.e. `NA`). The code below shows the geographic
+extents of each subregion indicating the minimum and maximim latitudes and
+longitudes within each.
+
+```{r}
+map_data("world") %>%
+  filter(region == "USA") %>%
+  group_by(subregion) %>%
+  summarise(count = n(),
+            min_lat = min(lat),
+            max_lat = max(lat),
+            min_long = min(long),
+            max_long = max(long)) %>%
+  arrange(min_long)
+```
+
+Inspection of the subregions indicates that most pf the longitudes are negative
+meaning they exist in the western hemisphere where the United States mainland
+also exists. There are some parts of Alaska that extend past the $180^{\circ}$
+line of longitide. Most longitude in Alaska are very negative but a few are
+very positive ($179.78^{\circ} \text{E}$). For most US visualizations, grouping
+will be done at the state level including all 50 states and possible Washington
+D.C. Boundaries for the country can be collected by getting the US boundaries
+that have negative longitudes from the world dataset. Boundaries for each of the
+48 states and Washington D.C. can be obtained from the states dataset.
+
+```{r}
+map_us <- map_data("world") %>%
+  filter(region == "USA" & long < 0)
+map_us_48 <- map_data("state")
+```
+
+The national and state boundaries can then be plotted as a United States map
+as follows.
+
+```{r}
+ggplot(mapping = aes(x = long, y = lat,
+                     group = group)) +
+  geom_polygon(data = map_us,
+               color = "black",
+               size = 0.1,
+               fill = NA) +
+  geom_polygon(data = map_us_48,
+               color = "black",
+               size = 0.1,
+               fill = NA)
+```
+
+A macro function and example usage is presented below.
+
+```{r}
+mg_us_map <- function() {
+  return(list(
+  geom_polygon(data = map_us,
+               mapping = aes(x = long, y = lat,
+                     group = group),
+               color = "black",
+               size = 0.1,
+               fill = NA),
+  geom_polygon(data = map_us_48,
+               mapping = aes(x = long, y = lat,
+                     group = group),
+               color = "black",
+               size = 0.1,
+               fill = NA),
+  scale_x_continuous(breaks = seq(-180, -60, 30),
+                     minor_breaks = seq(-180, -60, 15),
+                     labels = unlist(
+                       lapply(seq(-180, -60, 30),
+                              function(x) ifelse(x < 0,
+                                                 parse(text = paste0(-x, "^o", "*W")),
+                                                 ifelse(x > 0,
+                                                        parse(text = paste0(x, "^o", "*E")),
+                                                        parse(text = paste0(x, "^o"))))
+                              ))),
+  scale_y_continuous(breaks = seq(10, 80, 10),
+                     minor_breaks = seq(10, 80, 5),
+                     labels = unlist(
+                       lapply(seq(10, 80, 10),
+                              function(x) ifelse(x < 0,
+                                                 parse(text = paste0(-x, "^o", "*S")),
+                                                 ifelse(x > 0,
+                                                        parse(text = paste0(x, "^o", "*N")),
+                                                        parse(text = paste0(x, "^o"))))
+                              )))
+  ))
+}
+
+ggplot() +
+  mg_us_map() +
   labs(title = "Title",
        subtitle = "Subtitle",
        caption = "Caption",

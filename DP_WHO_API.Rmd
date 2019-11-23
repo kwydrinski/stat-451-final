@@ -149,52 +149,6 @@ the sections below demonstrate common usage patterns for this data and API.
 
 ## Prototype Assumptions / Requirements
 
-```{r}
-library(ggmap)
-```
 
-```{r}
-world_map <- get_stamenmap(bbox = c(left = -179.99,
-                                    bottom = -60.0,
-                                    right = 180,
-                                    top = 83),
-                           maptype = "toner-lite",
-                           zoom = 3,
-                           force = TRUE,
-                           crop = TRUE,
-                           messaging = FALSE)
-```
 
-```{r}
-ggmap(world_map)
-```
 
-```{r}
-map_data("world2") %>%
-  distinct(region) %>%
-  arrange(region)
-```
-
-```{r}
-map_us <- map_data("world") %>%
-  filter(region == "USA" &
-           is.na(subregion))
-```
-
-```{r}
-ggplot(data = map_us,
-       mapping = aes(x = long, y = lat,
-                     group = group)) +
-  geom_polygon(color = "grey90", fill = "white")
-```
-
-```{r}
-ggplot(data = map_data("world"),
-       mapping = aes(x = long, y = lat,
-                     group = group)) +
-  geom_polygon(color = "black",
-               size = 0.1,
-               fill = "white") +
-  coord_map(xlim = c(-200, 200),
-            ylim = c(-65, 85))
-```
