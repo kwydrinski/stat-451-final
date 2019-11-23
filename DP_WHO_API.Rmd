@@ -1,0 +1,200 @@
+---
+title: "Data Profile - World Health Organization API"
+author: "Kurt Wydrinski"
+date: "11/22/2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+# include source chunks in knitted output by default
+knitr::opts_chunk$set(echo = TRUE)
+# include the necessary packages
+library(tidyverse)
+```
+
+# Source
+
+During the formation of the United Nations in 1945, one of the key objectives
+for its ongoing mission was to foster cooperation between countries to address
+many social well-being issues, including health.[^1] This objective was taken on
+as part of the World Health Organization (WHO) which was established on April 7,
+1948.[^2] The WHO continues this mission today with 194 countries cooperating at
+various levels to promote global health concerns. In doing so, the WHO regularly
+collects data from its members that are related to health issues. The data
+contains various time series regarding diseases, illnesses, economics, social
+demographics, etc. This data is collectively captured in the WHO's online
+database *Global Health Observatory (GHO)*.[^3]
+
+[^1]: See <https://www.history.com/this-day-in-history/the-united-nations-is-born>.
+[^2]: See <https://www.who.int/about/who-we-are/history>.
+[^3]: See <https://www.who.int/gho/about/en/>.
+
+# API Overview
+
+The R package `WHO`, provides a simple API to access the GHO. It only provides
+two functions: `get_codes()` and `get_data()`. Inside the GHO, each time series
+that exists is identifed by a label. Each label is a code that uniquely
+identifies the series. These labels are then used a a parameter to `get_data()`
+to retrieve the time series observations.
+
+```{r}
+# install.packages("WHO")
+library(WHO)
+```
+
+The code below uses the `extra` parameter to download all metadata available for
+the GHO codes.
+
+```{r}
+who_codes <- get_codes(extra = TRUE)
+glimpse(who_codes)
+```
+
+There are `r formatC(length(who_codes$label), format = "d", big.mark = ",")`
+indicators or time series in this dataset. The `category` variable is a WHO
+grouping of the indicators into `r n_distinct(who_codes$category)` sets of
+indicators as follows:
+
+\tiny
+
+```{r}
+who_codes %>%
+  group_by(category) %>%
+  summarise(indicator_count = n()) %>%
+  knitr::kable()
+```
+
+\normalsize
+
+Note the following about the above categories.
+
+1. There are 447 indicators that do not have a category assigned by the WHO.
+   These should be considered as a category called `Uncategorized` or
+   `No category`.
+2. The naming convention is not consistent across categories. For example, some
+   use single words, phrases, all capital letters, irregular case, etc. Category
+   names should be somewhat standardized while retaining the original meaning in
+   the dataset.
+3. A number of categories appear to be fragmented. For example, there are
+   three premutations of *Neglected Tropical Diseases* that need to be combined
+   into a single category.
+
+The table below provides a list of the indicators in the
+*Demographic and socioeconomic statistics* category. However, inspection of the
+table should make it apparent that a number of these indicators are based on
+population.
+
+```{r}
+who_codes %>%
+  filter(category == "Demographic and socioeconomic statistics") %>%
+  select(label, display) %>%
+  knitr::kable()
+```
+
+A closer look may make it apparent that the data may not have a total population
+number. It is possible that `WHS10_1` could have it by the `display` string.
+
+```{r}
+who_codes %>%
+  filter(label == "WHS10_1")
+```
+
+Inspection of the indicator observation in the metadata shows that the `url` and
+`definition_xml` variables are URLs to further information about the indicator.
+`url` is an address for a web page on the GHO registry that explains what the
+indicator represents. The `defintion_xml` provides the same information
+presented in the explanation page in XML format.
+
+As the [explanation page](https://www.who.int/data/gho/indicator-metadata-registry/imr-details/3056)
+suggests, the `WHS10_1` indicator does reflect the population count/census
+statistic. This may or may not be useful when used with other indicators. In
+looking at all indicators in the metadata, there are at least three others that
+are called `Population`.
+
+```{r}
+who_codes %>%
+  filter(str_detect(display, "^Population$")) %>%
+  select(label, display, category)
+```
+
+## API Risks
+
+Based on the analysis above, the following risks appear to exist when using this
+API dataset.
+
+1. The data is not tidy and needs to be made such before detailed analysis can
+   be completed.
+2. The structure of the data is inconsistent and needs detailed exploration when
+   deciding on which indicators to use.
+3. The `category` variable in the metadata (i.e. codes) is not very reliable.
+   Careful considerations need to be made when leveraging this variable. The
+   category should be used as the basis for a new variable which is a reliable
+   identifier for logically-related indicators.
+
+## API Rewards
+
+Based on the analysis above the following benefits seem to be gained by using
+this API and dataset.
+
+1. The data can be accessed using the simple `WHO` package.
+2. The data is acessible via the Internet via on-demand API calls.
+3. The data contains international health and disease data along with related
+   indicators.
+
+# Usage Prototype
+
+The sections below provide a prototypical usage for this dataset and API. The
+actual use and visualization of the data will vary between projects. However,
+the sections below demonstrate common usage patterns for this data and API.
+
+## Prototype Assumptions / Requirements
+
+```{r}
+library(ggmap)
+```
+
+```{r}
+world_map <- get_stamenmap(bbox = c(left = -179.99,
+                                    bottom = -60.0,
+                                    right = 180,
+                                    top = 83),
+                           maptype = "toner-lite",
+                           zoom = 3,
+                           force = TRUE,
+                           crop = TRUE,
+                           messaging = FALSE)
+```
+
+```{r}
+ggmap(world_map)
+```
+
+```{r}
+map_data("world2") %>%
+  distinct(region) %>%
+  arrange(region)
+```
+
+```{r}
+map_us <- map_data("world") %>%
+  filter(region == "USA" &
+           is.na(subregion))
+```
+
+```{r}
+ggplot(data = map_us,
+       mapping = aes(x = long, y = lat,
+                     group = group)) +
+  geom_polygon(color = "grey90", fill = "white")
+```
+
+```{r}
+ggplot(data = map_data("world"),
+       mapping = aes(x = long, y = lat,
+                     group = group)) +
+  geom_polygon(color = "black",
+               size = 0.1,
+               fill = "white") +
+  coord_map(xlim = c(-200, 200),
+            ylim = c(-65, 85))
+```

@@ -1,0 +1,168 @@
+---
+title: "Geographic Mapping Techniques"
+author:
+- Jedidiah Harwood^[California State University - East Bay]
+- Kurt Wydrinski^[California State University - East Bay]
+date: "11/22/2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(maps)
+```
+
+# Introduction
+
+There are a number of techniques available for creating geographic maps within
+R. Techniques using both the `maps`, `ggplot` and other `tidyverse` packages are
+demonstrated in the following sections.
+
+# Basic Techniques
+
+## World Maps
+
+The code below demonstrates the simplest world map. By default, borders are
+drawn 1 unit thick in a medium grey color. Also notice that the map is centered
+on the Prime Meridian at $0^{\circ}$ longitude.
+
+```{r}
+ggplot() +
+  borders()
+```
+
+The simple map is just that, simple but it's not very appealing. Adding the
+`size` graphic aesthetic parameter to the borders call, thinner border line can
+be used in which improves the appeal of the map.
+
+```{r}
+ggplot() +
+  borders(size = 0.1)    # thin borders
+```
+
+While the thin borders are an improvement, they become harder to see due to the
+default medium-grey color. Using the `colour` parameter of `borders()` allows
+the borders to be rendered in different colors. The code below demonstrates
+using a thin, black border. This fine-line border looks cleaner and more refined
+than the default border rendering.
+
+```{r}
+ggplot() +
+  borders(size = 0.1,
+          colour = "black")    # thin, black borders
+```
+
+The axes, titles, captions, etc. are either missing or not labelled very clearly
+in the above plot. The following actions will address this:
+
+1. Re-scale axes and label with proper units-of-measure.
+2. Clearly label variables represented on the axes.
+3. Add placeholder titling elements for further clarity. However, these are
+   placeholders because it is expected that each world map data visualization
+   will be appropriately titled for the information it is conveying. These
+   guidelines should be followed when choosing appropriate titling elements:
+   
+   1. `title` - Indicate the main subject/point of data visualization (e.g.
+      *Country Population*)
+   2. `subtitle` - Indicate constraints, filters or transformations applied to
+      the underlying data (e.g. *(by most recent reported census)*, *(in thousands of people)*,
+      etc.)
+   3. `caption` - **TODO: define standard**
+   4. `tag` - **TODO: define standard**
+
+The code below applies to actions to improve the ease in understanding the map.
+
+```{r}
+ggplot() +
+  borders(size = 0.1,
+          colour = "black") +    # thin, black borders
+  scale_x_continuous(breaks = seq(-180, 180, 90),
+                     minor_breaks = seq(-180, 180, 30),
+                     labels = unlist(
+                       lapply(seq(-180, 180, 90),
+                              function(x) ifelse(x < 0,
+                                                 parse(text = paste0(x, "^o", "*W")),
+                                                 ifelse(x > 0,
+                                                        parse(text = paste0(x, "^o", "*E")),
+                                                        parse(text = paste0(x, "^o"))))
+                              ))) +
+  scale_y_continuous(breaks = seq(-90, 90, 45),
+                     minor_breaks = seq(-90, 90, 15),
+                     labels = unlist(
+                       lapply(seq(-90, 90, 45),
+                              function(x) ifelse(x < 0,
+                                                 parse(text = paste0(x, "^o", "*S")),
+                                                 ifelse(x > 0,
+                                                        parse(text = paste0(x, "^o", "*N")),
+                                                        parse(text = paste0(x, "^o"))))
+                              ))) +
+  labs(title = "Title",
+       subtitle = "Subtitle",
+       caption = "Caption",
+       tag = "Tag",
+       x = "Longitude",
+       y = "Latitude")
+```
+
+In the code below, a refactoring has been performed to extract the boilerplate
+code for the country borders and axes scales. Notice that the code return a list
+of items that include a `layer` object containing the borders and two `scale`
+objects for the axes. The `+.gg` operator allows various types of plot
+components to be added to a plot, including layers and scales. These can either
+be added individually or a list of this can be added with a single `+` operator.
+
+The function below extracts the common plot components into a single function
+call that can be used as the basis for global maps. By doing so, this code can
+then be used within a `ggplot()` call sequence to quickly add the borders and
+scales that are common to all global maps. Effectively, creating a function like
+this that returns a list of ggplot components acts like a macro. It is suggested
+that any functions like this be prefixed with `mg_` by name to indicate they are
+a macro ggplot operation.
+
+The use and benefit of this is demonstrated in the following code. Notice the
+structure of the function call that returns a `list`. Also note the conciseness
+of the ggplot call sequence. As long as these macro calls return a list of
+addable ggplot components, these calls can be placed anywhere inside the call
+sequence.
+
+```{r}
+mg_global_map <- function() {
+  return(list(
+    borders(size = 0.1,
+            colour = "black"),
+    scale_x_continuous(breaks = seq(-180, 180, 90),
+                       minor_breaks = seq(-180, 180, 30),
+                       labels = unlist(
+                         lapply(seq(-180, 180, 90),
+                                function(x) ifelse(x < 0,
+                                                   parse(text = paste0(x, "^o", "*W")),
+                                                   ifelse(x > 0,
+                                                          parse(text = paste0(x, "^o", "*E")),
+                                                          parse(text = paste0(x, "^o"))))
+                                ))),
+    scale_y_continuous(breaks = seq(-90, 90, 45),
+                       minor_breaks = seq(-90, 90, 15),
+                       labels = unlist(
+                         lapply(seq(-90, 90, 45),
+                                function(x) ifelse(x < 0,
+                                                   parse(text = paste0(x, "^o", "*S")),
+                                                   ifelse(x > 0,
+                                                          parse(text = paste0(x, "^o", "*N")),
+                                                          parse(text = paste0(x, "^o"))))
+                                )))
+    ))
+}
+
+ggplot() +
+  mg_global_map() +
+  labs(title = "Title",
+       subtitle = "Subtitle",
+       caption = "Caption",
+       tag = "Tag",
+       x = "Longitude",
+       y = "Latitude")  
+```
