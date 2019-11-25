@@ -147,8 +147,339 @@ The sections below provide a prototypical usage for this dataset and API. The
 actual use and visualization of the data will vary between projects. However,
 the sections below demonstrate common usage patterns for this data and API.
 
-## Prototype Assumptions / Requirements
+## Prototype Exploration
 
+### *per 100,000* Indicators
 
+A number of the indicators  in the database are measured and scaled to units of
+100,000. Most these indicators are scaling to report over country population
+units of 100,000 people. The table below presents a sampling of these
+indicators.
 
+```{r}
+who_codes %>%
+  filter(str_detect(display, "per 100 000 ")) %>%
+  select(label, display, category)
+```
+
+#### Usefulness Assessment
+
+There are about ninety indicators that report statistics on groups of 100,000.
+Most of the grouping are by population (i.e. *per 100,000 people*) but there are
+also a few by *adult population* and *live births*. As can be seen in the table
+below, these indicators cross a number of topics. It could be possible to tell
+a story about *The X per 100,000 people...*.
+
+```{r echo=FALSE}
+who_codes %>%
+  filter(str_detect(display, "per 100 000 ")) %>%
+  mutate(Topic = category) %>%
+  group_by(Topic) %>%
+  summarise(Indicators = n()) %>%
+  arrange(Topic) %>%
+  knitr::kable()
+```
+
+### *Infectious diseases* Indicators
+
+A number of the indicators in the database measure various statistics about
+different infectious diseases. There are statistics for number of cases, number
+of deaths from various infectious diseases, and a few other more detailed
+statsitics about diseases such as leptospirosis (not to be confused with
+leprosy.) The table below presents a sampling of these indicators.
+
+```{r}
+who_codes %>%
+  filter(category == "Infectious diseases")
+```
+
+Each of these indicators has a number of time series with annual values for
+different countries. However, not all of these indicators have a lot of data and
+may not be very usable. The sections below describe a few indicators that are of
+interest and could be of some use.
+
+#### "The Bird Flu" - Number of Cases
+
+The `WHS3_51` indicator shows the *H5N1 influenza - number of reported cases*.
+The H5N1 strain of influenza is commonly know as *avian flu* or *the bird flu*.
+
+```{r}
+# This function is used to create clean factors for analysis from the GHO
+# dataset.
+gho_vectorize <- function(v) {
+  switch(class(v),
+         "character" = {
+           f <- as_factor(v)
+           fct_explicit_na(fct_relevel(f,
+                                       sort(levels(f))),
+                           na_level = "NA")
+         },
+         "factor" = {
+           fct_explicit_na(fct_relevel(v,
+                                       sort(levels(v))),
+                           na_level = "NA")
+         },
+         "numeric" = as_factor(v))
+}
+```
+
+```{r}
+tb_bird_flu <- get_data("WHS3_51")
+tb_bird_flu$country <- gho_vectorize(tb_bird_flu$country)
+tb_bird_flu$region <- gho_vectorize(tb_bird_flu$region)
+tb_bird_flu$publishstate <- gho_vectorize(tb_bird_flu$publishstate)
+```
+
+```{r}
+tb_bird_flu %>%
+  group_by(country) %>%
+  select(country, year, value, worldbankincomegroup, region) %>%
+  arrange(country, year)
+```
+
+```{r}
+summary(tb_bird_flu)
+```
+
+##### Usefulness Assessment
+
+The following items may cause issues when using this indicator.
+
+1. There is are only 28 observations for Bird Flu in the dataset.
+2. There are 3 observations with `NA` for the country.
+   2.1. Two of these are for the *Western Pacific* region which also includes
+        Viet Nam, China, etc. These oberservations could be reports of incidents
+        that could not be attributed to a given country in the region but may
+        have been reported by one. For example, a foreign traveller could have
+        been treated for the incident in Viet Nam. It is not fair to assume the
+        person contracted the disease in Viet Nam so the `NA` country should be
+        considered a valid observation.
+   2.2. The third of these is attributed to the *Upper-middle-income* WHO income
+        group category. No other observations have this attribution so this one
+        appears to be an observation caputured by the WHO to highlight the group.
+
+Based on the issues above, there is some elevated risk in using this dataset. It
+is very small so statistics will be hard to accurately derive. The `NA` country
+observations suggest a mixture of hetergeneous observations; most are
+observations of the number of cases in a given country for a given year while
+others summarize case reports for various groups that span countries or outside
+of countries in some way.
+
+#### Tuberculosis - Number of Cases
+
+The `WHS3_54` indicator shows the *Number of reported cases of tuberculosis (DOTS)*.
+
+```{r}
+tb_tuber <- get_data("WHS3_54")
+tb_tuber$country <- gho_vectorize(tb_tuber$country)
+tb_tuber$region <- gho_vectorize(tb_tuber$region)
+tb_tuber$publishstate <- gho_vectorize(tb_tuber$publishstate)
+```
+
+```{r}
+tb_tuber %>%
+  group_by(country) %>%
+  arrange(country, year) %>%
+  select(country, year, value, worldbankincomegroup, region)
+```
+
+```{r}
+summary(tb_tuber)
+```
+
+```{r}
+who_codes %>%
+  filter(label == "WHS3_54")
+```
+
+##### Usefulness Assessment
+
+The following item may cause issues when using this indicator.
+
+1. There are only observations for the year 2008.
+
+Based on the issue above, this data will have limited use bacause it only covers
+one year.
+
+#### Cholera - Number of Cases
+
+The `CHOLERA_0000000001` indicator shows the
+*Number of reported cases of cholera*.
+
+```{r}
+tb_cholera <- get_data("CHOLERA_0000000001")
+tb_cholera$country <- gho_vectorize(tb_cholera$country)
+tb_cholera$region <- gho_vectorize(tb_cholera$region)
+tb_cholera$publishstate <- gho_vectorize(tb_cholera$publishstate)
+```
+
+```{r}
+tb_cholera %>%
+  group_by(country) %>%
+  arrange(country, year) %>%
+  select(country, year, value, worldbankincomegroup, region)
+```
+
+```{r}
+summary(tb_cholera)
+```
+
+```{r, fig.width=6.5, fig.height=10}
+ggplot(data = tb_cholera %>%
+                group_by(country) %>%
+                summarise(count = n())) +
+  geom_col(mapping = aes(x = country,
+                         y = count)) +
+  coord_flip() +
+  theme(axis.text = element_text(size = 6)) +
+  labs(title = "Per Country Cholera Observations",
+       subtitle = "(the number of annual observations about cholera)",
+       caption = "Data retrieved via WHO::get_data('CHOLERA_0000000001').",
+       tag = "GHO",
+       x = "",
+       y = "Observations")  
+```
+
+```{r}
+tb_cholera %>%
+  filter(country == "NA")
+```
+
+##### Usefulness Assessment
+
+The following items may cause issues when using this indicator.
+
+1. Not all countries have a cosnsistent number of annual observations.
+2. There are 9 observations where `country` is `NA`.
+   2.1. These were all from 2013.
+   2.2. They appear to be summmary data produced in 2013 for different regions
+        (including a "global" region).
+
+Although the above issues pose some elevated risk in using this dataset, there
+are enough observations across countries and years to analyze and report on this
+data.
+
+### *water* Indicators
+
+Cholera is caused by the *Vibrio cholerae* bacterium which has infected either
+food or water that has been ingested.[^4] The *GHO* has a number of indicators
+in its datasets that could be useful to help tell a story about cholera. The
+table below presents a sampling of these indicators.
+
+[^4]: See <https://www.webmd.com/a-to-z-guides/cholera-faq#1>.
+
+```{r}
+who_codes %>%
+  filter(str_detect(display, "water")) %>%
+  select(category, display, label) %>%
+  arrange(category, label)
+```
+
+#### Water - Improved Drinking Sources (`WHS5_122`)
+
+The `WHS5_122` indicator shows the
+*Population using improved drinking-water sources (%)*.
+
+```{r}
+tb_water_improved <- get_data("WHS5_122")
+```
+
+##### Usefulness Assessment
+
+The following items will cause issues when using this indicator.
+
+1. There are no observations available for this indicator.
+
+Without any data, there is nothing to analyze or report. This indicator is no
+useful.
+
+#### Water - Improved Drinking Sources (`EQ_WATER`)
+
+The `EQ_WATER` indicator shows the
+*Population using improved drinking-water sources (%)*.
+
+```{r}
+tb_water_improved <- get_data("EQ_WATER")
+tb_water_improved$country <- gho_vectorize(tb_water_improved$country)
+tb_water_improved$region <- gho_vectorize(tb_water_improved$region)
+tb_water_improved$publishstate <- gho_vectorize(tb_water_improved$publishstate)
+```
+
+```{r}
+tb_water_improved %>%
+  arrange(country, year) %>%
+  select(country, year, value, wealthquintile, region)
+```
+
+```{r}
+summary(tb_water_improved)
+```
+
+```{r, fig.width=6.5, fig.height=3}
+ggplot(data = tb_water_improved %>%
+                group_by(country) %>%
+                summarise(count = n())) +
+  geom_col(mapping = aes(x = country,
+                         y = count)) +
+  scale_y_continuous(breaks = seq(0, 15, 1)) +
+  coord_flip() +
+  theme(axis.text = element_text(size = 6)) +
+  labs(title = "Per Country Improved Drinking Water Observations",
+       subtitle = "(the number of annual observations about improved drinking water access)",
+       caption = "Data retrieved via WHO::get_data('EQ_WATER').",
+       tag = "GHO",
+       x = "",
+       y = "Observations")  
+```
+
+```{r}
+ggplot(data = tb_water_improved %>%
+                group_by(year) %>%
+                summarise(count = n())) +
+  geom_col(mapping = aes(x = year,
+                         y = count)) +
+  labs(title = "Annual Improved Drinking Water Observations",
+       subtitle = "(the total annual observations about improved drinking water access)",
+       caption = "Data retrieved via WHO::get_data('EQ_WATER').",
+       tag = "GHO",
+       x = "",
+       y = "Observations")  
+
+```
+
+##### Usefulness Assessment
+
+The following items may cause issues when using this indicator.
+
+1. There are no observations for the years 1998-2002.
+2. The dataset seems like it could be incomplete data. The WHO defintion of this
+   indicator can be located at [the WHO web site](https://www.who.int/data/gho/data/indicators/indicator-details/GHO/population-using-improved-drinking-water-sources-(-)).
+   At the bottom of the page, there is [a link](https://washdata.org/) to a
+   joint project between WHO and UNICEF regarding safe drinking water. This web
+   site contains data for more countries and for more years regarding safe
+   drinking water. It appears the `WHO` package API may not be pulling all
+   available data.
+3. The data is not tidy because each year has 5 rows with each row represent the
+   value for a certain quintile of the wealth of the population.
+
+Based on the issue above, this data may have limited use bacause it only covers
+a subset of the available data. The data at the joint project between the WHO
+and UNICEF may be better to use than this dataset.
+
+## Prototype Requirements
+
+Although there are some limitations to this data, there should be enough usable
+data to create some interested visualizations. If this data was used in
+conjunction with the WHO/UNICEF data, we could tell a story with the following
+visualizations.
+
+1. Overview of different infectious diseases around the world.
+2. Highlight of cholera incidents and deaths around the world.
+3. Breakdown of water access by wealth quintiles in cholera-affected nations.
+4. TBD more detail regarding wealth (or aid) with data TBD.
+
+We'd need further analysis but should be able to easily find data to further
+breakdown the wealth aspect. There many other indicator in the WHO data to
+analyze and possibel use for this. If they aren't usuable, we can get economic
+data regarding wealth elsewhere.
 
