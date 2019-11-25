@@ -152,7 +152,7 @@ magType | Algorithm or Method Used to Evaluate the Method of the Earthquake
 nst | Number of Seismic Stations used to evaluate Eathquake Location
 gap | The Largest azimutahl gap between azimuthally adjacent stations (in degrees)
 horizontalError | Uncertainty of Observed Event's Location (in KM)
-dmin | Smallest observed Distancwe to event epicenter from the Closest Seismic Station
+dmin | Smallest observed Distance to event epicenter from the Closest Seismic Station
 rms | Root Mean Square Calculations of Residuals in predictions of Event occurence.
 net | ID of Data Contributer
 id | Unique Identification of Eathquake
@@ -173,8 +173,31 @@ ggplot(data = earthquake) +
   geom_point(mapping = aes(x = longitude, y = latitude, color = mag))
 ```
 
+**Analysis:** As evident from the world map, it appears that the west coast of the United States has had the highest amount of recorded earthquakes in the past 30 days.  Other frequent earthquakes sites include Japan, Malaysia, Alaska, and the Phillipines.  While the West coast of the United States appears to have the biggest cluster of earthquakes, the continent and shoreline of Asia appears to have the most earthquakes with the highest magnitude.  
 
 
+
+
+## Bubble Map of Earthquakes by Magnitude (With Labels)
+
+```{r}
+radius <- sqrt(earthquake$mag/ pi )
+symbols(earthquake$nst, earthquake$magNst, circles = radius, inches = .35, fg = "white", bg = "salmon", xlab = "NST", ylab = "MagNST", main = "Bubble Chart with Circle Radius by Magnitude")
+text(earthquake$nst, earthquake$magNst, earthquake$place, cex = .5)
+```
+**Analysis:**  For the Bubble Chart, we decided to utilize the variables NST, MAgNST, and the Magnitude.  The x-axis represents the amount of seismic sensors used to detect the location, and the y-axis represents the number of seismic sensors used to calculate the magnitude.  The diameter of each circle, is based off of the Magnitude for each indivudal observation. 
+  As evident from the bubble chart, it appeards that there are more Location seismic sensors used than sensors used to calculate magnitude.  In addition, one can tell from the distribuion of the larger circles, that the number of seismic sensors used has no effect on evaluating the magnitude of a quake.  
+  
+  As the clustering of the circle's labels leads to a very distracting plot, the bubble plot has been plotted again, without the text labels. 
+
+
+
+
+## Bubble Plot of Earthquakes by Magnitude (Without Labels)
+
+```{r}
+symbols(earthquake$nst, earthquake$magNst, circles = radius, inches = .35, fg = "white", bg = "salmon", xlab = "NST", ylab = "MagNST", main = "Bubble Chart with Circle Radius by Magnitude")
+```
 
 
 
@@ -192,6 +215,125 @@ See `Final.pdf` in this project's Files section for detailed instructions.
 
 ***
 
-TO DO
+# API Overview
+
+The R package `WHO`, provides a simple API to access the GHO. It only provides
+two functions: `get_codes()` and `get_data()`. Inside the GHO, each time series
+that exists is identifed by a label. Each label is a code that uniquely
+identifies the series. These labels are then used a a parameter to `get_data()`
+to retrieve the time series observations.
+
+```{r}
+#install.packages("WHO")
+library(WHO)
+```
+
+The code below uses the `extra` parameter to download all metadata available for
+the GHO codes.
+
+```{r}
+who_codes <- get_codes(extra = TRUE)
+glimpse(who_codes)
+```
+
+There are `r formatC(length(who_codes$label), format = "d", big.mark = ",")`
+indicators or time series in this dataset. The `category` variable is a WHO
+grouping of the indicators into `r n_distinct(who_codes$category)` sets of
+indicators as follows:
+
+\tiny
+
+```{r}
+who_codes %>%
+  group_by(category) %>%
+  summarise(indicator_count = n()) %>%
+  knitr::kable()
+```
+
+\normalsize
+
+Note the following about the above categories.
+
+1. There are 447 indicators that do not have a category assigned by the WHO.
+   These should be considered as a category called `Uncategorized` or
+   `No category`.
+2. The naming convention is not consistent across categories. For example, some
+   use single words, phrases, all capital letters, irregular case, etc. Category
+   names should be somewhat standardized while retaining the original meaning in
+   the dataset.
+3. A number of categories appear to be fragmented. For example, there are
+   three premutations of *Neglected Tropical Diseases* that need to be combined
+   into a single category.
+
+The table below provides a list of the indicators in the
+*Demographic and socioeconomic statistics* category. However, inspection of the
+table should make it apparent that a number of these indicators are based on
+population.
+
+```{r}
+who_codes %>%
+  filter(category == "Demographic and socioeconomic statistics") %>%
+  select(label, display) %>%
+  knitr::kable()
+```
+
+A closer look may make it apparent that the data may not have a total population
+number. It is possible that `WHS10_1` could have it by the `display` string.
+
+```{r}
+who_codes %>%
+  filter(label == "WHS10_1")
+```
+
+Inspection of the indicator observation in the metadata shows that the `url` and
+`definition_xml` variables are URLs to further information about the indicator.
+`url` is an address for a web page on the GHO registry that explains what the
+indicator represents. The `defintion_xml` provides the same information
+presented in the explanation page in XML format.
+
+As the [explanation page](https://www.who.int/data/gho/indicator-metadata-registry/imr-details/3056)
+suggests, the `WHS10_1` indicator does reflect the population count/census
+statistic. This may or may not be useful when used with other indicators. In
+looking at all indicators in the metadata, there are at least three others that
+are called `Population`.
+
+```{r}
+who_codes %>%
+  filter(str_detect(display, "^Population$")) %>%
+  select(label, display, category)
+```
+
+## API Risks
+
+Based on the analysis above, the following risks appear to exist when using this
+API dataset.
+
+1. The data is not tidy and needs to be made such before detailed analysis can
+   be completed.
+2. The structure of the data is inconsistent and needs detailed exploration when
+   deciding on which indicators to use.
+3. The `category` variable in the metadata (i.e. codes) is not very reliable.
+   Careful considerations need to be made when leveraging this variable. The
+   category should be used as the basis for a new variable which is a reliable
+   identifier for logically-related indicators.
+
+## API Rewards
+
+Based on the analysis above the following benefits seem to be gained by using
+this API and dataset.
+
+1. The data can be accessed using the simple `WHO` package.
+2. The data is acessible via the Internet via on-demand API calls.
+3. The data contains international health and disease data along with related
+   indicators.
+
+# Usage Prototype
+
+The sections below provide a prototypical usage for this dataset and API. The
+actual use and visualization of the data will vary between projects. However,
+the sections below demonstrate common usage patterns for this data and API.
+
+## Prototype Assumptions / Requirements
+
 
 ***
