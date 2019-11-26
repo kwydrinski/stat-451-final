@@ -244,6 +244,35 @@ viz_data
   
 ```{r}
 viz_data$deaths <- viz_data$deaths%>% str_remove(pattern = "[:space:]\\[[:digit:]+-[:digit:]+\\]") %>% parse_integer()
+# The code in the line above works just fine for this; we should leave this
+# as-is since it serves the purpose.
+#
+# With regular expressions, there a many ways to accomplish the same task.  For
+# example, here are a couple of alternatives that end with the same result.
+#
+# 1. viz_data$deaths %>% str_remove(" \\[.*$") %>% as.numeric()
+#    - viz_data$deaths vector piped to str_remove()
+#    - regex pattern says "Find patterns that begin with a single space ( ),
+#      followed by a left square bracket(\\[), followed by zero or more of any
+#      character (.*) until the end of the string ($)." The result becomes the
+#      first part of the string with only the digits we want. These are then
+#      ready for numeric conversion.
+#    - as.numeric() converts all remaining digits strings into the numeric
+#      vector
+#
+# 2.viz_data$deaths %>% str_split(" ") %>% map(1) %>% as.nuemric()
+#    - viz_data$deaths vector piped to str_split()
+#    - str_split() breaks the string into multiple elements and returns them as
+#      a list. The regex pattern says "Split the string at single spaces ( ).
+#      For this data, that is either 1 or 2 elements. For example "1234" ends up
+#      as list of one element, "1234", while "1234 5678" ends up as a list of two
+#      elements, "1234" and "5678". We only wane the first so one more step is
+#      needed to get just these first elements.
+#    - purrr::map() is to extract the first elements of the list into their own
+#      list. These are then read for numeric conversion.
+#    - as.numeric() converts all remaining digits strings into the numeric
+#      vector
+
 viz_data$deaths.0
 
 viz_data <- viz_data %>% select(-inadequacy, -gho, -worldbankincomegroup)
