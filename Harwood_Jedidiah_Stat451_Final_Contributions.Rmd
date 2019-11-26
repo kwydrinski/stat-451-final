@@ -304,30 +304,4 @@ ggplot(mapping = aes(x = country, y = total_cases)) +
 
 
 
-
-
-
-
-
-
-
-
-Next, I  will create a waffeplot for the number of Cholera Cases per country, in order to gain an inference of the distribution in each country.  To begin this process, I will first format the "viz_data" dataset into the proper format.   
-
-```{r}
-waffle_viz_data <- viz_data %>% group_by(country) %>% summarise(total_cases = sum(cases, na.rm = TRUE)) %>% pivot_wider(names_from = country, values_from = total_cases) %>% arrange(desc(total_cases)) %>% mutate(ranking = row_number())
-```
-
-
-Next, with the data finally formatted correctly, I will now create the waffle plot.  
-
-
-```{r}
-waffle(waffle_viz_data, rows = 20, colors = (c(seq(1,37))), xlab = "1 Square = 1 Observation")
-```
-
-
-
-
-
 ***
