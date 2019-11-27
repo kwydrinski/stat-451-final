@@ -1,6 +1,8 @@
 ---
 title: "Final"
-output: html_notebook
+output:
+  word_document: default
+  html_notebook: default
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -296,11 +298,21 @@ ggplot(mapping = aes(x = country, y = total_cases)) +
   coord_flip()
 ```
 
+**Analysis:** As evident from the Lollipop chart, it appears that the country with the most observed cholera cases, is Haiti.  Other countries with significant cholera populations, include the "Democratic Republic of the Congo," "Somalia," and "Kenya."  For the most part, it appears that Cholera is not very previlent amongs the other countries.  
 
 
+### BarChart of Water Quality Related Deaths:
 
+  Next, in order to gain an inference on the spread of deaths related to poor water quality, I will create a histogram of the variables "deaths" and "counties."  However, I will also add a coloring aspect to the barplot, relating to how many observed cases of cholera were present in the listed countries.  
 
+```{r}
+ggplot(data = viz_data) + 
+  geom_bar(mapping = aes(x = country, y = deaths, fill = cases), stat = 'identity') +
+  theme(axis.text.x = element_text(angle = 90)) +
+  coord_flip()
+```
 
+**Analysis:** As evident from the Bar plot, it appears that the countries with the most water-quality related deaths, are India, Nigeria, and the Democratic Republic of the Congo.  In addition, it appears that the countries with the most water quality related deaths do not differ from the countries with the least amount of water-quality related deaths, in their respective numbers of cholera cases.  However, there is one exception: Kenya.  From this observation, I believe that the number of water-quality related deaths may not be as correlated to the number of Cholera case, as expected, and may be dependent on the quality of treatment available for each respective country.
 
 
 
