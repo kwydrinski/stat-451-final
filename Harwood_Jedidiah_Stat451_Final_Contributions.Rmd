@@ -1,8 +1,9 @@
 ---
 title: "Final"
 output:
-  word_document: default
+  pdf_document: default
   html_notebook: default
+  word_document: default
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -19,10 +20,9 @@ be used.
 Describe the pallet and explain when you would use such a pallet.
 
 ```{r echo=FALSE, fig.align='center'}
-knitr::include_graphics('1a.png')
+knitr::include_graphics('images/1a.png')
 ```
 
-***
 
 The palette above is an example of sequential color schemes using multi-hued
 colors. 
@@ -45,17 +45,17 @@ density ranges, etc.
 
 One vizualiation that may beneit from this color scheme, is a tile plot. One of the main features of a heat map, is its use of color to distinguish ordinal categorical variables, in a spacial setting.  With a sequential color scheme as such, I would apply this theme to a heat map, in order to provide a well read, distinguishable, vizualization.  
 
-***
+
 
 ## b. Pallet 2
 
 Describe the pallet and explain when you would use such a pallet.
 
 ```{r echo=FALSE, fig.align='center'}
-knitr::include_graphics('1b.png')
+knitr::include_graphics('images/1b.png')
 ```
 
-***
+
 
 The palette above is an example of diverging color schemes. Each scheme is
 diverging because it allows the highlighting of both central and extreme values
@@ -87,17 +87,16 @@ old but instead more interest in the distribution, the *average*. In this case,
 a diverging color scheme may be more suited to the vizualization to not only
 highlight the average (central valeus) but also highlight the extremes.
 
-***
+
 
 ## c. Pallet 3
 
 Describe the pallet and explain when you would use such a pallet.
 
 ```{r echo=FALSE, fig.align='center'}
-knitr::include_graphics('1c.png')
+knitr::include_graphics('images/1c.png')
 ```
 
-***
 
 The palette above is an example of qualitative color schemes. Each scheme is
 designed with a set of color shades and hues that contrast from one another.
@@ -115,7 +114,7 @@ sports team fan affiliation, etc.
 
 Some vizualization to which this color scheme could be applied, include pie charts, waffle plots, donut plots, and ring plots.  
 
-***
+
 
 \newpage
 # 2) Earthquakes
@@ -169,7 +168,7 @@ magNst | Total number of Seismic Stations used to Calculate Earthquake's Magnitu
 Status | Indicates Whether Event has been viewed by a Person
 locationSource | Network that Authored location of Event
 magSource | Network that Authored Preffered Magnitude
--------------------
+
 
 
 ```{r}
@@ -207,11 +206,11 @@ symbols(earthquake$nst, earthquake$magNst, circles = radius, inches = .35, fg = 
 
 
 
-***
+
 
 TO DO
 
-***
+
 
 \newpage
 # 3) Disease / Illness Story
@@ -274,7 +273,7 @@ viz_data
   
   With the dataset properly transformed, I will now utilize the package "ggplot" in order to create vizualizations of the refined dataset. 
 
-***
+ 
 
 **Scatterplot With Refined Smoother of Cases of Cholera by Deaths from Improper Water**
 ```{r}
@@ -316,4 +315,4 @@ ggplot(data = viz_data) +
 
 
 
-***
+
