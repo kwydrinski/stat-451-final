@@ -275,7 +275,7 @@ viz_data
 
  
 
-**Scatterplot With Refined Smoother of Cases of Cholera by Deaths from Improper Water**
+## Scatterplot With Refined Smoother of Cases of Cholera by Deaths from Improper Water
 ```{r}
 viz_data %>% 
 ggplot() + 

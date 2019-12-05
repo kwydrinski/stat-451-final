@@ -318,4 +318,18 @@ ggplot(data = viz_data) +
 **Analysis:** As evident from the Bar plot, it appears that the countries with the most water-quality related deaths, are India, Nigeria, and the Democratic Republic of the Congo.  In addition, it appears that the countries with the most water quality related deaths do not differ from the countries with the least amount of water-quality related deaths, in their respective numbers of cholera cases.  However, there is one exception: Kenya.  From this observation, I believe that the number of water-quality related deaths may not be as correlated to the number of Cholera case, as expected, and may be dependent on the quality of treatment available for each respective country.
 
 
+## Time Series of Cholera Cases
 
+
+```{r}
+viz_data %>% select(country, region, cases) %>% group_by(region) %>% summarise(total_cases = sum(cases, na.rm = TRUE)) %>%
+
+ggplot(aes(x = factor(1), y = total_cases/100000, fill = region)) +
+  geom_bar(stat = 'identity') +
+  coord_polar(theta = "y") +
+  ggtitle("Pie Chart of Cholera Cases per Region") +
+  labs(x = "Cholera Cases (per 100,000)",
+       y = "")
+```
+
+**Analysis:** As evident from the pie chart, it appears that the region with the most observed Choler cases, is Africa.  However, this region is followed closely by the Americas.  The region with the least amount of observed Cholera cases, was Europe.  The sliver for Europe is so small, it is not visible on this pie chart!  
