@@ -320,6 +320,9 @@ ggplot(data = viz_data) +
 
 ## Time Series of Cholera Cases
 
+```{r}
+viz_data %>% select(country, region, cases) %>% group_by(region) %>% summarise(total_cases = sum(cases, na.rm = TRUE))
+```
 
 ```{r}
 viz_data %>% select(country, region, cases) %>% group_by(region) %>% summarise(total_cases = sum(cases, na.rm = TRUE)) %>%
@@ -329,7 +332,9 @@ ggplot(aes(x = factor(1), y = total_cases/100000, fill = region)) +
   coord_polar(theta = "y") +
   ggtitle("Pie Chart of Cholera Cases per Region") +
   labs(x = "Cholera Cases (per 100,000)",
-       y = "")
+       y = "") +
+  scale_y_continuous(labels = NULL) +
+  scale_x_discrete(labels = NULL)
 ```
 
 **Analysis:** As evident from the pie chart, it appears that the region with the most observed Choler cases, is Africa.  However, this region is followed closely by the Americas.  The region with the least amount of observed Cholera cases, was Europe.  The sliver for Europe is so small, it is not visible on this pie chart!  
