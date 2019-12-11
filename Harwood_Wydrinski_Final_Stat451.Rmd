@@ -1,9 +1,7 @@
 ---
 title: "Final"
 subtitle: "STAT 451-01"
-author:
-- Jedidiah Harwood
-- Kurt Wydrinski
+author: "Jedidiah Harwood, Kurt Wydrinski"
 date: "December 11, 2019"
 output:
   pdf_document:
@@ -11,8 +9,9 @@ output:
     toc_depth: 2
 ---
 
-```{r setup, include=FALSE}
+```{r Setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(kableExtra)
 ```
 
 \newpage
@@ -21,59 +20,52 @@ knitr::opts_chunk$set(echo = TRUE)
 When using color in visualizations there are different kinds of pallets that can
 be used.
 
-## a. Pallet 1
+## a. Pallet 1 - Sequential Color Schemes with Multi-Hued Colors
 
 Describe the pallet and explain when you would use such a pallet.
 
-```{r echo=FALSE, fig.align='center'}
+```{r echo=FALSE, fig.align='center', fig.cap='Sequential Color Schemes with Multi-Hued Colors'}
 knitr::include_graphics('images/1a.png')
 ```
 
-***
-
-The palette above is an example of sequential color schemes using multi-hued
-colors. 
-
-Each scheme is sequential because it allows the highlighting of order in data
-through the use of shading. Within a given hue such as blue, there are multiple
-shades from light to dark. The lightness or darkness of the hue can be used to
-represent different levels of values. Typically, light hues represent low
-values and dark hues represent high values.
+Figure 1 contains examples of *sequential color schemes using multi-hued colors*.
+Each scheme is sequential because it allows the highlighting of ordering within
+data through the use of color shading. Within a given hue such as blue, there
+are multiple shades from light to dark. The lightness or darkness of the hue can
+be used to represent different levels of values. Typically, light hues represent
+low values and dark hues represent high values.
 
 Each scheme is multi-hued meaning the colors used are not just shades of a
-single hue but instead, use multiple hues. When using multiple hues, the
-palettes still provide a pleasing aethetic transition from lighter shades to
-darker shades that preserves the implied sequential meaning of the collective
-colors.
+single hue but instead, come from multiple hues. When using multiple hues, the
+palettes still provide a pleasing aesthetic transition from lighter to darker
+shades that preserves the implied sequential meaning of the collective colors.
 
-Sequential colors schemes are suited to highlighted data that can be categorized
-into ordered categories. Examples could be age ranges, levels of experience,
-density ranges, etc.  
+Sequential colors schemes are suited to highlighting data that can be
+categorized into ordered groups Examples could be age ranges, levels of
+experience, density ranges, etc. Tile plots are a visualization that typically
+leverage a sequential color scheme. A key feature of a tile plot (heat map) is
+display ordinal categorical variables, in a spatial setting.  Using a sequential
+color scheme helps to differentiate catagories providing a well-read,
+distinguishable, vizualization.  
 
-One vizualiation that may beneit from this color scheme, is a tile plot. One of the main features of a heat map, is its use of color to distinguish ordinal categorical variables, in a spacial setting.  With a sequential color scheme as such, I would apply this theme to a heat map, in order to provide a well read, distinguishable, vizualization.  
-
-***
-
-## b. Pallet 2
+## b. Pallet 2 - Diverging Color Schemes
 
 Describe the pallet and explain when you would use such a pallet.
 
-```{r echo=FALSE, fig.align='center'}
+```{r echo=FALSE, fig.align='center', fig.cap='Diverging Color Schemes'}
 knitr::include_graphics('images/1b.png')
 ```
 
-***
-
-The palette above is an example of diverging color schemes. Each scheme is
+Figure 2 contains examples of *diverging color schemes*. Each scheme is
 diverging because it allows the highlighting of both central and extreme values
 in underlying data. Lighter shades and hues are used as the central colors in
-each of these palettes. In the palettes above, each has five (5) colors with
-the third (3) color being the central, lightest color. Moving away from this
-color in either direction towards the first and last colors in the palette, the
-shades and hues get darker. The colors diverge away from a light, neutral color
-towards darker, more distinct colors. The colors at the ends of the palettes
-typically contrast highly from each other to help amplify the meaning of the
-divergence in the underlying data away from its central values.
+each of these palettes. In the palettes above, each has five (5) colors with the
+third (3) color being the central, lightest color. Moving away from this color 
+in either direction towards the first and last colors in the palette, the shades
+and hues get darker. The colors diverge away from a light, neutral color towards
+darker, more distinct colors. The colors at the ends of the palettes typically
+contrast highly from each other to help amplify the meaning of the divergence in
+the underlying data away from its central values.
 
 Diverging colors schemes are suited to highlight the central and extreme value
 in data distributions. The light coloring of central values tends to indicate
@@ -84,58 +76,51 @@ distributions, income level distributions, age ranges, etc.
 Note that many datasets could be highlighted by either sequential or diverging
 schemes. For example, age ranges could be highlighted by either. However, the
 intent of the visualization would help dictate which to use. Consider a
-question posed such as "Comparing pre-teen, teen, adult, and eldery
-populations...?" Now consider a second, similar question posed such as "What are
-the average ages...?" The first question is being posed from a categorial
-perspective that implies a sequence tied to human lifecycles. There is implied
-interest in order so a sequential color scheme would be applicable. For the
-second question, there was not much emphasis on any difference between young or
-old but instead more interest in the distribution, the *average*. In this case,
-a diverging color scheme may be more suited to the vizualization to not only
-highlight the average (central valeus) but also highlight the extremes.
+question posed such as, "Comparing pre-teen, teen, adult, and eldery
+populations...?" Now consider a second, similar question posed such as, "What are
+the average ages...?" The first question is posed from a categorial perspective
+that implies a sequence tied to human lifecycles. There is implied interest in
+order so a sequential color scheme would be applicable. For the second question,
+there is much emphasis on any difference between young or old but instead, more
+interest in the distribution, the *average*. In this case, a diverging color
+scheme may be more suited to the vizualization to not only highlight the average
+(central values) but also the extreme values.
 
-***
-
-## c. Pallet 3
+## c. Pallet 3 - Qualitative Color Schemes
 
 Describe the pallet and explain when you would use such a pallet.
 
-```{r echo=FALSE, fig.align='center'}
+```{r echo=FALSE, fig.align='center', fig.cap='Qualitative Color Schemes'}
 knitr::include_graphics('images/1c.png')
 ```
 
-***
+Figure 3 contains examples of *qualitative color schemes*. Each scheme is designed
+with a set of color shades and hues that contrast from one another. Sequential
+and diverging color schemes do not try to contrast as much but instead try to
+show more relationship or transitioning of values between each color.
+Qualitative schemes try to show the contrast as much as possible attempting to
+highlight the grouping and differences more than the similarities or nearness to
+other groups.
 
-The palette above is an example of qualitative color schemes. Each scheme is
-designed with a set of color shades and hues that contrast from one another.
-Sequential and diverging color schemes do not try to contrast as much but
-instead try to show more relationship or transitioning of values between each
-color. Qualitative schemes try to show the contrast as much as possible
-attempting to highlighted the grouping and differences more than the
-similarities or nearness to other groups.
-
-Qualitative color schemes are best used when tyring to depict different
-categories of data that are more distinct from each other than they are as
-similar or close to one another. Examples include demographic data such as
-racial identity, gender identity, political affiliation, religious affiliation,
-sports team fan affiliation, etc.
-
-Some vizualzation to which this color scheme could be applied, include pie charts, waffle plots, donut plots, and ring plots.  
-
-***
+Qualitative color schemes are best used when trying to depict different
+categories of data that are more distinct from each other than they are similar.
+Examples include demographic data such as racial identity, gender identity,
+political affiliation, religious affiliation, sports team fan affiliation, etc.
+These color schemes work well with pie charts, waffle plots, donut plots, and
+ring plots.  
 
 \newpage
 # 2) Earthquakes
 
-```{r}
-library(tidyverse)
+```{r include=FALSE}
+suppressMessages(library(tidyverse))
 library(ggmap)
 library(WHO)
 library(stringr)
 library(waffle)
 ```
 
-
+## Instructions
 
 Here is the link to the USGS website where the worldwide
 [earthquake](https://earthquake.usgs.gov/earthquakes/feed/v1.0/) data can be
@@ -143,15 +128,18 @@ downloaded. Download all earthquake data for the past 30 days in .csv format.
 Using R, make a map of the world with points where the earthquakes occurred.
 Make a bubble map using the magnitude. Thoroughly discuss your visualizations.
 
-## World Map of Points
+## Data Source
 
-  As the earthquake data of the past 30 days is updated every minute, it is important to specify that the earthquake data was downloaded at 1:08 p.m., on November 18, 2019.
-  
-  To begin the map, I will read in the earthquake dataset under the variable name: "earthquake."
-```{r}
-earthquake <- read_csv("earthquake.csv", col_names = TRUE)
-head(earthquake)
-```
+The U.S. Geological Survey (USGS) is a program run by the National Institute of
+Standards and Technology (NIST) to help provide data and information about the
+occurences of earthquakes. The data is provided in a variety of formats and in
+a number of frequencies. For this analysis, data on all recorded earthquakes
+from the 30 days ending November 18, 2019 at 1:08 P.M. PST is being analyzed.
+This data was obtained from
+<https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.csv> at the
+USGS web site. This data was placed into a file named `earthquake.csv` and is
+provided along with this report. The table below provides a brief overview of
+the variables contained with the dataset.
 
 Variable | Description
 ---------|-----------
@@ -161,12 +149,12 @@ longitude | Longitude location of Earthquake
 depth | Depth of the Event
 mag | Magnitude of Event
 magType | Algorithm or Method Used to Evaluate the Method of the Earthquake
-nst | Number of Seismic Stations used to evaluate Eathquake Location
+nst | Number of Seismic Stations used to evaluate Earthquake Location
 gap | The Largest azimutahl gap between azimuthally adjacent stations (in degrees)
 horizontalError | Uncertainty of Observed Event's Location (in KM)
 dmin | Smallest observed Distance to event epicenter from the Closest Seismic Station
 rms | Root Mean Square Calculations of Residuals in predictions of Event occurence.
-net | ID of Data Contributer
+net | ID of Data Contributor
 id | Unique Identification of Eathquake
 updated | Time of Upload in Original Dataset
 place | Nearby Named Geographical Region
@@ -175,26 +163,207 @@ depthError | Uncertainty of Earthquake Depth (in KM)
 magNst | Total number of Seismic Stations used to Calculate Earthquake's Magnitude
 Status | Indicates Whether Event has been viewed by a Person
 locationSource | Network that Authored location of Event
-magSource | Network that Authored Preffered Magnitude
+magSource | Network that Authored Preferred Magnitude
 
-
-
-```{r}
-ggplot(data = earthquake) +
-  borders("world") + 
-  geom_point(mapping = aes(x = longitude, y = latitude, color = mag)) 
+```{r include=FALSE}
+earthquake <- read_csv("earthquake.csv", col_names = TRUE)
 ```
 
-**Analysis:** As evident from the world map, it appears that the west coast of the United States has had the highest amount of recorded earthquakes in the past 30 days.  Other frequent earthquakes sites include Japan, Malaysia, Alaska, and the Phillipines.  While the West coast of the United States appears to have the biggest cluster of earthquakes, the continent and shoreline of Asia appears to have the most earthquakes with the highest magnitude.  
+A small sample of the dataset is provided below. Notice that during this time
+period of 30 days ending November 18, 2019, there were 11,886 observed
+earthquakes.
+
+```{r echo=FALSE}
+earthquake
+```
+
+## Vizualizations
+
+### Earthquake Locations
+
+The USGS collects data on earthquakes that occur around the world, not just in
+the US. Figure 4 shows the locations of the 11,866 observed earthquakes.
+
+```{r echo=FALSE, fig.align='center', fig.cap='Globally Observed Earthquakes'}
+ggplot(data = earthquake) +
+  borders("world") + 
+  geom_point(mapping = aes(x = longitude,
+                           y = latitude,
+                           color = mag,
+                           alpha = 0.5),
+             size = 1) +
+  scale_color_continuous(name = "Magnitude",
+                         low = "#56B1F7",
+                         high = "#132b43") +
+  scale_alpha(guide = 'none') +
+  scale_x_continuous(breaks = seq(-200, 180, 100),
+                     minor_breaks = seq(-200, 180, 50),
+                     labels = unlist(
+                       lapply(seq(-200, 180, 100),
+                              function(x) ifelse(x < 0,
+                                                 parse(text = paste0(-x, "^o", "*W")),
+                                                 ifelse(x > 0,
+                                                        parse(text = paste0(x, "^o", "*E")),
+                                                        parse(text = paste0(x, "^o"))))
+                              ))) +
+  scale_y_continuous(breaks = seq(-90, 90, 45),
+                     minor_breaks = seq(-90, 90, 45/2),
+                     labels = unlist(
+                       lapply(seq(-90, 90, 45),
+                              function(x) ifelse(x < 0,
+                                                 parse(text = paste0(-x, "^o", "*S")),
+                                                 ifelse(x > 0,
+                                                        parse(text = paste0(x, "^o", "*N")),
+                                                        parse(text = paste0(x, "^o"))))
+                              ))) +
+  labs(title = "Globally Observed Earthquakes",
+       subtitle = "Oct. 19 - Nov. 18, 2019",
+       x = "Longitude",
+       y = "Latitude") +
+  theme(text = element_text(family = "serif", size = 8))
+```
+
+A cursory view of the map shows clustering earthquakes in typically known
+locations for earthquakes such as Alaska, the western United States, eastern
+Mediterranean, and Asian "Ring-of-Fire" around the countries of Japan, Malaysia,
+Phillipines. A closer inspection reveals that while the United States does have
+a lot of frequent earthquakes, they tend to be lower in strength (i.e.
+magnitude) than in other parts of the world. For example, both the western coast
+of South America and "Ring-of-Fire" show highly concentrated zones of very
+strong earthquakes.
+
+### Earthquake Magnitudes
+
+```{r echo=FALSE, fig.align='center', fig.cap='Magnitude of Globally Observed Earthquakes'}
+earthquake %>% filter(mag < 10.0) %>%
+ggplot(mapping = aes(x = longitude,
+                     y = latitude,
+                     alpha = 0.5)) +
+  borders("world") +
+  geom_point(aes(size = mag),
+             shape = 1) +
+  scale_alpha(guide = 'none') +
+  scale_size_continuous(name = "Approximate Magnitude",
+                        range = c(0.25, 2.5),
+                        breaks = seq(from = 0.0, to = 7.0, by = 1.0),
+                        labels = c("< 1.0", "1.0", "2.0", "3.0", "4.0", "5.0", "6.0", ">= 7.0")) +
+  scale_x_continuous(breaks = seq(-200, 180, 100),
+                     minor_breaks = seq(-200, 180, 50),
+                     labels = unlist(
+                       lapply(seq(-200, 180, 100),
+                              function(x) ifelse(x < 0,
+                                                 parse(text = paste0(-x, "^o", "*W")),
+                                                 ifelse(x > 0,
+                                                        parse(text = paste0(x, "^o", "*E")),
+                                                        parse(text = paste0(x, "^o"))))
+                              ))) +
+  scale_y_continuous(breaks = seq(-90, 90, 45),
+                     minor_breaks = seq(-90, 90, 45/2),
+                     labels = unlist(
+                       lapply(seq(-90, 90, 45),
+                              function(x) ifelse(x < 0,
+                                                 parse(text = paste0(-x, "^o", "*S")),
+                                                 ifelse(x > 0,
+                                                        parse(text = paste0(x, "^o", "*N")),
+                                                        parse(text = paste0(x, "^o"))))
+                              ))) +
+  labs(title = "Approximate Magnitude of Globally Observed Earthquakes",
+       subtitle = "Oct. 19 - Nov. 18, 2019",
+       x = "Longitude",
+       y = "Latitude") +
+  theme(text = element_text(family = "serif", size = 8))
+```
+
+Figure 5 shows the approximate magnitudes of the observed earthquakes. The size
+of each circle show the approximate magnitude of each quake.
+
+```{r include=FALSE}
+map_data("state") %>%
+  filter(region == "california") %>%
+  summarise(min(long),max(long),min(lat),max(lat))
+```
+
+Figure 6 shows the approximate magnitudes of observed earthquakes in California
+and nearby areas.
+
+```{r echo=FALSE, fig.align='center', fig.cap='Observed Earthquakes Around California', fig.width=5}
+mg_ca_map <- function() {
+  map_filtered_data <- map_data("state") %>%
+    filter(region == "california")
+  
+  return(list(
+  geom_polygon(data = map_filtered_data,
+               mapping = aes(x = long, y = lat,
+                     group = group),
+               color = "black",
+               size = 0.1,
+               fill = NA),
+  scale_x_continuous(breaks = seq(-125, -115, 5),
+                     minor_breaks = seq(-125, -115, 5/3),
+                     labels = unlist(
+                       lapply(seq(-125, -115, 5),
+                              function(x) ifelse(x < 0,
+                                                 parse(text = paste0(-x, "^o", "*W")),
+                                                 ifelse(x > 0,
+                                                        parse(text = paste0(x, "^o", "*E")),
+                                                        parse(text = paste0(x, "^o"))))
+                              ))),
+  scale_y_continuous(breaks = seq(30, 45, 5),
+                     minor_breaks = seq(30, 45, 5/3),
+                     labels = unlist(
+                       lapply(seq(30, 45, 5),
+                              function(x) ifelse(x < 0,
+                                                 parse(text = paste0(-x, "^o", "*S")),
+                                                 ifelse(x > 0,
+                                                        parse(text = paste0(x, "^o", "*N")),
+                                                        parse(text = paste0(x, "^o"))))
+                              )))
+  ))
+}
+
+ggplot() +
+  mg_ca_map() +
+  geom_point(data = earthquake %>%
+               filter(longitude >= -125.0 & longitude <= -115.0 &
+                        latitude >= 30 & latitude <= 45.0),
+             mapping = aes(x = longitude,
+                           y = latitude,
+                           alpha = 0.5,
+                           size = mag),
+             shape = 1) +
+  scale_size_continuous(name = "Approximate Magnitude",
+                        range = c(0, 2),
+                        breaks = seq(from = 0.0, to = 7.0, by = 1.0),
+                        labels = c("< 1.0",
+                                   "1.0",
+                                   "2.0",
+                                   "3.0",
+                                   ">= 4.0",
+                                   "5.0",
+                                   "6.0",
+                                   "7.0")) +
+  scale_alpha(guide = 'none') +
+  labs(title = "Observed Earthquakes in California",
+       subtitle = "Oct. 19 - Nov. 18, 2019",
+       x = "Longitude",
+       y = "Latitude") +
+  theme(text = element_text(family = "serif", size = 8))  
+```
 
 
-
-
-## Bubble Map of Earthquakes by Magnitude (With Labels)
+### Bubble Map of Earthquakes by Magnitude (With Labels)
 
 ```{r}
-radius <- sqrt(earthquake$mag/ pi )
-symbols(earthquake$nst, earthquake$magNst, circles = radius, inches = .35, fg = "white", bg = "salmon", xlab = "NST", ylab = "MagNST", main = "Bubble Chart with Circle Radius by Magnitude")
+radius <- sqrt(earthquake$mag / pi)
+
+symbols(earthquake$nst,
+        earthquake$magNst,
+        circles = radius,
+        inches = .35,
+        fg = "white", bg = "salmon",
+        xlab = "NST", ylab = "MagNST",
+        main = "Bubble Chart with Circle Radius by Magnitude")
+
 text(earthquake$nst, earthquake$magNst, earthquake$place, cex = .5)
 ```
 **Analysis:**  For the Bubble Chart, we decided to utilize the variables NST, MAgNST, and the Magnitude.  The x-axis represents the amount of seismic sensors used to detect the location, and the y-axis represents the number of seismic sensors used to calculate the magnitude.  The diameter of each circle, is based off of the Magnitude for each indivudal observation. 
@@ -203,138 +372,266 @@ text(earthquake$nst, earthquake$magNst, earthquake$place, cex = .5)
   As the clustering of the circle's labels leads to a very distracting plot, the bubble plot has been plotted again, without the text labels. 
 
 
+**TODO:** KW: I cannot see how magnitude is being plotted. This bubble chart
+only compares `NST` and `magNST` which are just two type of sensors counts. How
+should we change this?
 
-
-## Bubble Plot of Earthquakes by Magnitude (Without Labels)
+### Bubble Plot of Earthquakes by Magnitude (Without Labels)
 
 ```{r}
-symbols(earthquake$nst, earthquake$magNst, circles = radius, inches = .35, fg = "white", bg = "salmon", xlab = "NST", ylab = "MagNST", main = "Bubble Chart with Circle Radius by Magnitude")
+symbols(earthquake$nst,
+        earthquake$magNst,
+        circles = radius, inches = .35,
+        fg = "white", bg = "salmon",
+        xlab = "NST", ylab = "MagNST",
+        main = "Bubble Chart with Circle Radius by Magnitude")
 ```
 
-
-***
-
-TO DO
-
-***
+**TODO:** KW: Again, this is teh same as the plot above. How do we document
+this?
 
 \newpage
-# 3) Disease / Illness Story
+# 3) Disease / Illness
 
-First, I will read in the "CHOLERA" dataset from the "WHO" metadata.
+## Data Source
 
+The World Health Organization (WHO) was created shortly after World War II as
+an international agency whose mission would be to improve overall world health.
+The WHO works within the United Nations system to help prevent and fight
+diseases around the world. They maintain a information about this mission in an
+online database called the *Global Health Observatory (GHO)*. This can be
+accessed at <https://www.who.int/data/gho>.
 
-```{r}
-gho_vectorize <- function(v) { ### To create a clean, factored vector
-  switch(class(v),
-         "character" = {
-           f <- as_factor(v)
-           fct_explicit_na(fct_relevel(f,
-                                       sort(levels(f))),
-                           na_level = "NA")
-         },
-         "factor" = {
-           fct_explicit_na(fct_relevel(v,
-                                       sort(levels(v))),
-                           na_level = "NA")
-         },
-         "numeric" = as_factor(v))
-}
+The R package `WHO` provides an interface to the GHO database. This API is can
+obtain various datasets directly from the database. This analysis will focus on
+data related to Cholera. Cholera is an infection caused by eating or drinking
+food or water that is infected the the bacterium *Vibrio cholerae*. While it is
+preventable and treatable, it can cause death. The WHO estimates there are
+upward of 4 million cases of the infection with upwards of 143,000 of these
+resulting in death. See <https://www.who.int/health-topics/cholera#tab=tab_1>
+for further details.
 
+```{r include=FALSE}
+WHO_codes <- get_codes()
+```
 
+The R API was used to collect data related to cholera. Observations for the
+following indicators were collected and analyzed.
 
+```{r echo=FALSE}
+WHO_codes %>%
+  filter(label %in% c("CHOLERA_0000000001",
+                      "WSH_10")) %>%
+  knitr::kable(col.names = c("Indicator",
+                             "Description",
+                             "Further Details")) %>%
+  column_spec(kable_input = ., 1, width = "1.5in") %>%
+  column_spec(kable_input = ., 2, width = "2in") %>%
+  column_spec(kable_input = ., 3, width = "2.5in")
+```
+
+```{r include=FALSE}
+# get the number of reported cholera cases and tidy it
 
 tb_cholera <- get_data("CHOLERA_0000000001")
-tb_cholera$country <- gho_vectorize(tb_cholera$country)
-tb_cholera$region <- gho_vectorize(tb_cholera$region)
-tb_cholera$publishstate <- gho_vectorize(tb_cholera$publishstate)
 
 tb_cholera <- tb_cholera %>%
   group_by(country) %>%
   arrange(country, year) %>%
-  select(country, year, value, worldbankincomegroup, region) %>% rename("cases" = value)
-tb_cholera
-```
+  select(country, year, value, region) %>%
+  rename("cases" = value)
 
+# get the number of reported deaths from water issues and tidy it
 
-Next, with the dataset successfully  read in, I will now add to the "WSH_10" dataset.  The "WSH_10" dataset, records the number of deaths related to improper water sources.     My goal, is to knit these to datasets by their common variables, and gain an inference on how the cases of Cholera in a country effect the number of deaths related to contaminated water intake.  However, as the WSH-10 dataset only contains values for, 2016, I will only filter out the observations from the year 2016.  
-
-```{r}
 d_table <- get_data("WSH_10")
-viz_data <- tb_cholera %>% left_join(d_table) %>% filter( year == 2016) %>% rename('deaths' = value)
-viz_data
+
+viz_data <- tb_cholera %>%
+  left_join(d_table,
+            by = c("country", "year", "region")) %>%
+  filter( year == 2016) %>%
+  rename('deaths' = value)
+viz_data$deaths <- viz_data$deaths %>%
+  str_remove(pattern = "[:space:]\\[[:digit:]+-[:digit:]+\\]") %>%
+  parse_integer()
+
+# create the final, tidy dataset for visualization
+
+viz_data <- viz_data %>% select(-gho)
 ```
 
-  As evident from the code output, the data has successfuly been read in  However, one column in particular is in need of tidying: deaths. unfortunately, this column was read in as a character vecotr.  to accomplish this, I will first remove the extra, none-numerical values.  Then, with the columns tidied up, I will now use the "dplyr" package in order to "parse" the columns into their proper forms.   
-  
-```{r}
-viz_data$deaths <- viz_data$deaths%>% str_remove(pattern = "[:space:]\\[[:digit:]+-[:digit:]+\\]") %>% parse_integer()
-viz_data$deaths
+## Vizualizations
 
-viz_data <- viz_data %>% select(-gho, -worldbankincomegroup)
-viz_data
-```
-  
-  With the dataset properly transformed, I will now utilize the package "ggplot" in order to create vizualizations of the refined dataset. 
+### Cases of Cholera by Deaths from Improper Water
 
- 
-
-## Scatterplot With Refined Smoother of Cases of Cholera by Deaths from Improper Water
-```{r}
-viz_data %>% 
-ggplot() + 
-  geom_point(mapping = aes(x = cases, y = deaths), color = 21) +
-  geom_smooth(mapping = aes(x = cases, y = deaths), method = "loess")
+```{r echo=FALSE, fig.align='center', fig.cap='Cases of Cholera by Deaths from Improper Water'}
+viz_data %>%
+  ggplot(mapping = aes(x = cases,
+                       y = deaths)) +
+  geom_point(color = 21) +
+  geom_smooth(method = "loess") +
+  scale_y_continuous(limits = c(-100000.0,250000.0),
+                     labels = scales::comma) +
+  scale_x_continuous(labels = scales::comma) +
+  labs(title = "Cases of Cholera by Deaths from Improper Water",
+       subtitle = "Year 2016",
+       x = "Reported Cases",
+       y = "Deaths") +
+  theme(text = element_text(family = "serif", size = 8))
 ```
 
-**Analysis:** As evident from the smoothed scatterplot, it appears that as the number of cases of Cholera increases, the number of deaths from a basic water source remains relatively constant.  To me, this is very odd, as I was expecting a very positive linear trend in the dataset, suggesting a strong correlation.  However, it appears that the amount of Cholera cases is at a constant trend with the amount of deaths in a country.  
+The smoothed scatterplot in figure 7 depicts that as the number of cases of
+Cholera increases, the number of deaths from a basic water source remains
+relatively constant. This may be counter-intuitive from certain perspectives
+that may think that there should be a strong, positive linear correlation
+between Cholera cases and related deaths. However, it appears that the amount of
+Cholera cases is at a constant trend with the amount of deaths in a country.  
 
-### Lollipop Plot:
+### Reported Cholera Cases by Country
 
-```{r}
-viz_data %>% select(country, cases) %>% group_by(country) %>% summarise(total_cases = sum(cases, na.rm = TRUE)) %>% 
-ggplot(mapping = aes(x = country, y = total_cases)) + 
-  geom_segment(mapping = aes(x = country, xend = country, y = 0, yend = total_cases)) +
-  geom_point(size = 5, color = "red", fill = alpha("orange", .3), alpha = .7, shape = 21, stroke = 2) + 
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  ggtitle("Lollipop Plot of Cholera Cases by Country") +
+```{r echo=FALSE, fig.align='center', fig.cap='Reported Cholera Cases by Country'}
+viz_data %>%
+  select(country, cases) %>%
+  group_by(country) %>%
+  summarise(total_cases = sum(cases, na.rm = TRUE)) %>%
+  ggplot(mapping = aes(x = country,
+                       y = total_cases)) + 
+  geom_segment(mapping = aes(x = country, xend = country,
+                             y = 0, yend = total_cases)) +
+  geom_point(size = 4,
+             color = "red",
+             fill = alpha("orange", .3),
+             alpha = .7,
+             shape = 21,
+             stroke = 1.5) + 
+  scale_y_continuous(labels = scales::comma) +
+  labs(title = "Reported Cholera Cases by Country",
+       subtitle = "",
+       x = "",
+       y = "Reported Cases") +
+  theme(text = element_text(family = "serif", size = 8)) +
   coord_flip()
 ```
 
-**Analysis:** As evident from the Lollipop chart, it appears that the country with the most observed cholera cases, is Haiti.  Other countries with significant cholera populations, include the "Democratic Republic of the Congo," "Somalia," and "Kenya."  For the most part, it appears that Cholera is not very previlent amongs the other countries.  
+The Lollipop chart in figure 8 depicts that that the country with the most
+reported Cholera cases, is Haiti.  Other countries with significant Cholera
+populations, include the Democratic Republic of the Congo, Yemen, Somalia, the
+United Republoic of Tanzania, Kenya and South Sudan. For the most part, it
+appears that Cholera is not very prevalent among other countries. 
 
+### Water Quality Related Deaths
 
-### BarChart of Water Quality Related Deaths:
-
-  Next, in order to gain an inference on the spread of deaths related to poor water quality, I will create a histogram of the variables "deaths" and "counties."  However, I will also add a coloring aspect to the barplot, relating to how many observed cases of cholera were present in the listed countries.  
-
-```{r}
-ggplot(data = viz_data) + 
-  geom_bar(mapping = aes(x = country, y = deaths, fill = cases), stat = 'identity') +
-  theme(axis.text.x = element_text(angle = 90)) +
+```{r echo=FALSE, fig.align='center', fig.cap='Water Quality Related Deaths by Country'}
+ggplot(data = viz_data) +
+  geom_bar(mapping = aes(x = country,
+                         y = deaths,
+                         fill = cases),
+           stat = 'identity') +
+  scale_y_continuous(labels = scales::comma) +
+  scale_fill_continuous(name = "Cholera Cases",
+                         low = "#56B1F7",
+                         high = "#132b43") +
+  labs(title = "Water Quality Related Deaths by Country",
+       subtitle = "",
+       x = "",
+       y = "Deaths") +
+  theme(text = element_text(family = "serif", size = 8)) +
   coord_flip()
 ```
 
-**Analysis:** As evident from the Bar plot, it appears that the countries with the most water-quality related deaths, are India, Nigeria, and the Democratic Republic of the Congo.  In addition, it appears that the countries with the most water quality related deaths do not differ from the countries with the least amount of water-quality related deaths, in their respective numbers of cholera cases.  However, there is one exception: Kenya.  From this observation, I believe that the number of water-quality related deaths may not be as correlated to the number of Cholera case, as expected, and may be dependent on the quality of treatment available for each respective country.
+Figure 9 presents a histogram of deaths related to poor water quality by
+country. The graph also uses a continuous color scale to repesent the number of
+reported Cholera cases within each country. Dark colors on the scale indicate
+more reported cases than lighter colors.
 
+It appears that the countries with the most water-quality related deaths, are
+India, Nigeria, and the Democratic Republic of the Congo.  It also appears that
+countries with the most water quality related deaths do not differ from
+countries with the least amount of water-quality related deaths, with respect to
+their rported numbers of cholera cases.  However, one exception is Kenya. From
+this observation, one may infer that the number of water-quality related deaths
+may not be as correlated to the number of Cholera cases, as expected. It is
+likely that other factors such as the availability of water treatment facilities
+may influence the number of deaths caused by poor water quality within each
+country.
 
-## Time Series of Cholera Cases
+### Regional Share of Cholera Cases
 
-```{r}
-viz_data %>% select(country, region, cases) %>% group_by(region) %>% summarise(total_cases = sum(cases, na.rm = TRUE))
-```
-
-```{r}
-viz_data %>% select(country, region, cases) %>% group_by(region) %>% summarise(total_cases = sum(cases, na.rm = TRUE)) %>%
-
-ggplot(aes(x = factor(1), y = total_cases/100000, fill = region)) +
+```{r echo=FALSE, fig.align='center', fig.cap='Regional Share of Cholera Cases'}
+viz_data %>%
+  select(country, region, cases) %>%
+  group_by(region) %>%
+  summarise(total_cases = sum(cases, na.rm = TRUE)) %>%
+  ggplot(aes(x = factor(1),
+             y = total_cases,
+             fill = region)) +
   geom_bar(stat = 'identity') +
-  coord_polar(theta = "y") +
-  ggtitle("Pie Chart of Cholera Cases per Region") +
-  labs(x = "Cholera Cases (per 100,000)",
-       y = "") +
+  scale_x_discrete(labels = NULL) +
   scale_y_continuous(labels = NULL) +
-  scale_x_discrete(labels = NULL)
+  scale_fill_discrete(name = "Region") +
+  coord_polar(theta = "y") +
+  labs(title = "Cholera Cases per Region",
+       subtitle = "(relative share of all cases)",
+       x = "",
+       y = "") +
+  theme(text = element_text(family = "serif", size = 8))
 ```
 
-**Analysis:** As evident from the pie chart, it appears that the region with the most observed Choler cases, is Africa.  However, this region is followed closely by the Americas.  The region with the least amount of observed Cholera cases, was Europe.  The sliver for Europe is so small, it is not visible on this pie chart!  
+The pie chart in figure 10 shows the relative share of reported cholera cases
+for each region. Africa has the largest share of cases followed closely by the
+America then the Eastern Mediterranean. The region with the least amount of
+observed Cholera cases, was Europe.  The sliver for Europe is so small, it is
+not visible on this pie chart.
+
+## Data Wrangling
+
+Although one would think the data maintained by the WHO in the GHO database is
+clean and possibly even tidy, it is not. This section describes how this data
+was retrieved, transformed and prepared for the preceding analysis and
+visualizations.
+
+First, the `CHOLERA_0000000001` dataset containing the observed number of
+reported cases of Cholera is read from the GHO database.
+
+```{r eval=FALSE}
+tb_cholera <- get_data("CHOLERA_0000000001")
+
+tb_cholera <- tb_cholera %>%
+  group_by(country) %>%
+  arrange(country, year) %>%
+  select(country, year, value, region) %>%
+  rename("cases" = value)
+```
+
+Next, the `WSH_10` dataset containing the observed deaths due to poor water
+quality was then downloaded. This data is joined to the reported cholera cases
+data. However, it is important to note that the WSH-10 dataset only contains
+observations for 2016.
+
+```{r eval=FALSE}
+d_table <- get_data("WSH_10")
+
+viz_data <- tb_cholera %>%
+  left_join(d_table,
+            by = c("country", "year", "region")) %>%
+  filter( year == 2016) %>%
+  rename('deaths' = value)
+```
+
+Although the data appears tidy and is close to being usable, the `deaths`
+variable contains extra data besides the death counts that needs to be ignored.
+The death counts are parsed out of the data to make the data yet even closer to
+being ready to analyze.
+
+```{r, eval=FALSE}
+viz_data$deaths <- viz_data$deaths %>%
+  str_remove(pattern = "[:space:]\\[[:digit:]+-[:digit:]+\\]") %>%
+  parse_integer()
+```
+
+There is one variable `gho` that exists in the original dataset but it not
+needed. This variable is removed leaving the `viz_data` dataset as tidy and
+ready for the above analysis.
+
+```{r, eval=FALSE}
+viz_data <- viz_data %>% select(-gho)
+```
