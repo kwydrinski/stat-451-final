@@ -283,6 +283,7 @@ map_data("state") %>%
   summarise(min(long),max(long),min(lat),max(lat))
 ```
 
+\newpage
 Figure 6 shows the approximate magnitudes of observed earthquakes in California
 and nearby areas.
 
@@ -350,22 +351,32 @@ ggplot() +
   theme(text = element_text(family = "serif", size = 8))  
 ```
 
+\newpage
+### Earthquake Magnitudes Detected by Sensors
 
-
-### Bubble Plot of Earthquakes by Magnitude (Without Labels)
-
-```{r}
+```{r include=FALSE}
 radius <- sqrt(earthquake$mag / pi)
+```
+
+```{r echo=FALSE, fig.align='center', fig.cap='Magnitudes Detected by Sensors'}
 symbols(earthquake$nst,
         earthquake$magNst,
         circles = radius, inches = .35,
         fg = "white", bg = "salmon",
         xlab = "NST", ylab = "MagNST",
-        main = "Bubble Chart with Circle Radius by Magnitude")
+        main = "Magnitudes Detected by Sensors")
 ```
 
-**Analysis:**  For the Bubble Chart, we decided to utilize the variables NST, MAgNST, and the Magnitude.  The x-axis represents the amount of seismic sensors used to detect the location, and the y-axis represents the number of seismic sensors used to calculate the magnitude.  The diameter of each circle, is based off of the Magnitude for each indivudal observation. 
-  As evident from the bubble chart, it appeards that there are more Location seismic sensors used than sensors used to calculate magnitude.  In addition, one can tell from the distribuion of the larger circles, that the number of seismic sensors used has no effect on evaluating the magnitude of a quake. 
+**Analysis:**  For the Bubble Chart in figure 7, we decided to utilize the
+variables NST, MagNST, and the Magnitude.  The x-axis represents the amount of
+seismic sensors used to detect the location, and the y-axis represents the
+number of seismic sensors used to calculate the magnitude.  The diameter of each
+circle, is based off of the Magnitude for each indivudal observation.
+
+As evident from the bubble chart, it appeards that there are more Location
+seismic sensors used than sensors used to calculate magnitude.  In addition, one
+can tell from the distribuion of the larger circles, that the number of seismic
+sensors used has no effect on evaluating the magnitude of a quake.
 
 \newpage
 # 3) Disease / Illness
@@ -436,6 +447,7 @@ viz_data$deaths <- viz_data$deaths %>%
 viz_data <- viz_data %>% select(-gho)
 ```
 
+\newpage
 ## Vizualizations
 
 ### Cases of Cholera by Deaths from Improper Water
@@ -456,13 +468,14 @@ viz_data %>%
   theme(text = element_text(family = "serif", size = 8))
 ```
 
-The smoothed scatterplot in figure 7 depicts that as the number of cases of
+The smoothed scatterplot in figure 8 depicts that as the number of cases of
 Cholera increases, the number of deaths from a basic water source remains
 relatively constant. This may be counter-intuitive from certain perspectives
 that may think that there should be a strong, positive linear correlation
 between Cholera cases and related deaths. However, it appears that the amount of
 Cholera cases is at a constant trend with the amount of deaths in a country.  
 
+\newpage
 ### Reported Cholera Cases by Country
 
 ```{r echo=FALSE, fig.align='center', fig.cap='Reported Cholera Cases by Country'}
@@ -489,12 +502,13 @@ viz_data %>%
   coord_flip()
 ```
 
-The Lollipop chart in figure 8 depicts that that the country with the most
+The Lollipop chart in figure 9 depicts that that the country with the most
 reported Cholera cases, is Haiti.  Other countries with significant Cholera
 populations, include the Democratic Republic of the Congo, Yemen, Somalia, the
 United Republoic of Tanzania, Kenya and South Sudan. For the most part, it
 appears that Cholera is not very prevalent among other countries. 
 
+\newpage
 ### Water Quality Related Deaths
 
 ```{r echo=FALSE, fig.align='center', fig.cap='Water Quality Related Deaths by Country'}
@@ -515,7 +529,7 @@ ggplot(data = viz_data) +
   coord_flip()
 ```
 
-Figure 9 presents a histogram of deaths related to poor water quality by
+Figure 10 presents a histogram of deaths related to poor water quality by
 country. The graph also uses a continuous color scale to repesent the number of
 reported Cholera cases within each country. Dark colors on the scale indicate
 more reported cases than lighter colors.
@@ -531,6 +545,7 @@ likely that other factors such as the availability of water treatment facilities
 may influence the number of deaths caused by poor water quality within each
 country.
 
+\newpage
 ### Regional Share of Cholera Cases
 
 ```{r echo=FALSE, fig.align='center', fig.cap='Regional Share of Cholera Cases'}
@@ -553,12 +568,13 @@ viz_data %>%
   theme(text = element_text(family = "serif", size = 8))
 ```
 
-The pie chart in figure 10 shows the relative share of reported cholera cases
+The pie chart in figure 11 shows the relative share of reported cholera cases
 for each region. Africa has the largest share of cases followed closely by the
 America then the Eastern Mediterranean. The region with the least amount of
 observed Cholera cases, was Europe.  The sliver for Europe is so small, it is
 not visible on this pie chart.
 
+\newpage
 ## Data Wrangling
 
 Although one would think the data maintained by the WHO in the GHO database is
