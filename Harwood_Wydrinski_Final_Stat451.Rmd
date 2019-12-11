@@ -351,34 +351,11 @@ ggplot() +
 ```
 
 
-### Bubble Map of Earthquakes by Magnitude (With Labels)
-
-```{r}
-radius <- sqrt(earthquake$mag / pi)
-
-symbols(earthquake$nst,
-        earthquake$magNst,
-        circles = radius,
-        inches = .35,
-        fg = "white", bg = "salmon",
-        xlab = "NST", ylab = "MagNST",
-        main = "Bubble Chart with Circle Radius by Magnitude")
-
-text(earthquake$nst, earthquake$magNst, earthquake$place, cex = .5)
-```
-**Analysis:**  For the Bubble Chart, we decided to utilize the variables NST, MAgNST, and the Magnitude.  The x-axis represents the amount of seismic sensors used to detect the location, and the y-axis represents the number of seismic sensors used to calculate the magnitude.  The diameter of each circle, is based off of the Magnitude for each indivudal observation. 
-  As evident from the bubble chart, it appeards that there are more Location seismic sensors used than sensors used to calculate magnitude.  In addition, one can tell from the distribuion of the larger circles, that the number of seismic sensors used has no effect on evaluating the magnitude of a quake.  
-  
-  As the clustering of the circle's labels leads to a very distracting plot, the bubble plot has been plotted again, without the text labels. 
-
-
-**TODO:** KW: I cannot see how magnitude is being plotted. This bubble chart
-only compares `NST` and `magNST` which are just two type of sensors counts. How
-should we change this?
 
 ### Bubble Plot of Earthquakes by Magnitude (Without Labels)
 
 ```{r}
+radius <- sqrt(earthquake$mag / pi)
 symbols(earthquake$nst,
         earthquake$magNst,
         circles = radius, inches = .35,
@@ -387,8 +364,8 @@ symbols(earthquake$nst,
         main = "Bubble Chart with Circle Radius by Magnitude")
 ```
 
-**TODO:** KW: Again, this is teh same as the plot above. How do we document
-this?
+**Analysis:**  For the Bubble Chart, we decided to utilize the variables NST, MAgNST, and the Magnitude.  The x-axis represents the amount of seismic sensors used to detect the location, and the y-axis represents the number of seismic sensors used to calculate the magnitude.  The diameter of each circle, is based off of the Magnitude for each indivudal observation. 
+  As evident from the bubble chart, it appeards that there are more Location seismic sensors used than sensors used to calculate magnitude.  In addition, one can tell from the distribuion of the larger circles, that the number of seismic sensors used has no effect on evaluating the magnitude of a quake. 
 
 \newpage
 # 3) Disease / Illness
